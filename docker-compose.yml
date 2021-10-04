@@ -1,0 +1,39 @@
+version: '2'
+services: 
+ mysql_container:
+  tty: true
+  image: mysql 
+  ports: 
+   - "3306:3306"
+  command: --init-file /data/application/init.sql
+  volumes:
+        - ./Mysql/init.sql:/data/application/init.sql
+  environment:
+   - MYSQL_ROOT_PASSWORD=test
+   - MYSQL_USER=test
+   - MYSQL_PASSWORD=test
+   - MYSQL_DATABASE=dev
+ goAPI:
+  tty: true
+  image: golang
+  ports:
+   - "8081:8081"
+  volumes:
+   - ./GoAPI:/app
+  working_dir: /app
+  entrypoint: sh -c "/app/up.sh"
+  depends_on:
+   - mysql_container
+ vue_ui:
+  tty: true
+  image: node:lts-alpine
+  volumes:
+   - ./docker-vuejs:/app
+  working_dir: /app
+  entrypoint: sh -c "/app/up.sh"
+  depends_on:
+   - goAPI
+  ports:
+   - "82:82"
+ 
+

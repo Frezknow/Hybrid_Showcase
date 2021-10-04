@@ -1,0 +1,11 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\docker-vuejs",
+    "\\docker-vuejs\\src\\plugins",
+    "\\GoAPI",
+    "\\Mysql"
+  ],
+  "SelectedNode": "\\GoAPI\\main.go",
+  "PreviewInSolutionExplorer": false
+}
