@@ -11,52 +11,52 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"strconv"
 	"time"
 )
 
-const MAX_UPLOAD_SIZE = 1024 * 1024 * 10 // 1MB
+const MAX_UPLOAD_SIZE = 1024 * 1024 * 10
+
 var db *sql.DB
 
 type Prediction struct {
 	ID         string `json:"id"`
 	Prediction string `json:"prediction"`
-	//more to come below this
+	Img        string `json: "img"`
 }
 
-//Image      string `json:"image"`
 func handleRequests() {
 	apiRouter := mux.NewRouter().StrictSlash(true)
 	apiRouter.HandleFunc("/all", all).Methods("GET", "OPTIONS")
 	apiRouter.HandleFunc("/predict", predict).Methods("POST", "OPTIONS")
+	apiRouter.PathPrefix("/").Handler(http.FileServer(http.Dir("./uploads/")))
 	log.Fatal(http.ListenAndServe(":8081", apiRouter))
 }
 
 func main() {
+
 	handleRequests()
 }
 
 func all(w http.ResponseWriter, r *http.Request) {
 	//Allow CORS here By * or specific origin
 	w.Header().Set("Access-Control-Allow-Origin", "*")
-	db, err := sql.Open("mysql", "root:test@tcp(172.24.0.2)/dev")
+	db, err := sql.Open("mysql", "root:test@tcp(172.25.0.2)/dev")
 	if err != nil {
 		panic(err)
 	}
 	defer db.Close()
-	rows, err := db.Query("SELECT id,prediction FROM predictions")
+	rows, err := db.Query("SELECT id,prediction,img FROM predictions")
 	if err != nil {
-		fmt.Println(err)                              // Ugly debug output
-		w.WriteHeader(http.StatusInternalServerError) // Proper HTTP response
+		fmt.Println(err)
+		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 	defer rows.Close()
-	// An album slice to hold data from returned rows.
 	var predictions []Prediction
-
-	// Loop through rows, using Scan to assign column data to struct fields.
 	for rows.Next() {
 		var pre Prediction
-		if err := rows.Scan(&pre.ID, &pre.Prediction); err != nil {
+		if err := rows.Scan(&pre.ID, &pre.Prediction, &pre.Img); err != nil {
 			json.NewEncoder(w).Encode(err)
 		}
 		predictions = append(predictions, pre)
@@ -91,7 +91,10 @@ func predict(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Create a new file in the uploads directory
-	dst, err := os.Create(fmt.Sprintf("./uploads/%d%s", time.Now().UnixNano(), filepath.Ext(fileHeader.Filename)))
+	name := time.Now().UnixNano()
+	ext := filepath.Ext(fileHeader.Filename)
+	storeName := strconv.FormatInt(name, 10) + ext
+	dst, err := os.Create(fmt.Sprintf("./uploads/%d%s", name, filepath.Ext(fileHeader.Filename)))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -104,29 +107,43 @@ func predict(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	//Begin SQL Connection
-	db, err := sql.Open("mysql", "root:test@tcp(172.24.0.2)/dev")
+	db, err := sql.Open("mysql", "root:test@tcp(172.25.0.2)/dev")
 
 	if err != nil {
 		panic(err)
 	}
 	defer db.Close()
-	p := "dog"
-	stmt, err := db.Prepare("INSERT predictions SET prediction=?")
+	p := "cat"
+	stmt, err := db.Prepare("INSERT INTO predictions(prediction,img) VALUES (?,?)")
 	if err != nil {
 		fmt.Println(err)                              // Ugly debug output
 		w.WriteHeader(http.StatusInternalServerError) // Proper HTTP response
 		return
 	}
 	defer stmt.Close()
-
-	res, err := stmt.Exec(p)
+	res, err := stmt.Exec(p, storeName)
 	if err != nil {
 		fmt.Println(err)                              // Ugly debug output
 		w.WriteHeader(http.StatusInternalServerError) // Proper HTTP response
 		return
 	}
-	if res != nil {
-
+	fmt.Println(res)
+	row, err := db.Query("SELECT id,prediction,img FROM predictions order by id desc limit 1 ")
+	if err != nil {
+		fmt.Println(err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
 	}
-	//json.NewEncoder(w).Encode(Predictions)
+	defer row.Close()
+	var pre Prediction
+	for row.Next() {
+		if err := row.Scan(&pre.ID, &pre.Prediction, &pre.Img); err != nil {
+			json.NewEncoder(w).Encode(err)
+		}
+	}
+	if err = row.Err(); err != nil {
+		json.NewEncoder(w).Encode(err)
+	}
+	fmt.Println(pre)
+	json.NewEncoder(w).Encode(pre)
 }
