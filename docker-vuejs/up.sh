@@ -1,1 +1,1 @@
-npm install -g http-server && cd /app && npm install && npm run build && http-server dist -p 82
+npm install -g http-server && cd /app && npm install && npm run build && http-server dist

@@ -17,7 +17,7 @@ services:
   tty: true
   image: golang
   ports:
-   - "8081:8081"
+   - "82:82"
   volumes:
    - ./GoAPI:/app
   working_dir: /app
@@ -34,6 +34,6 @@ services:
   depends_on:
    - goAPI
   ports:
-   - "82:82"
+   - "8081:8081"
  
 

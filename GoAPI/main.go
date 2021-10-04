@@ -30,7 +30,7 @@ func handleRequests() {
 	apiRouter.HandleFunc("/all", all).Methods("GET", "OPTIONS")
 	apiRouter.HandleFunc("/predict", predict).Methods("POST", "OPTIONS")
 	apiRouter.PathPrefix("/").Handler(http.FileServer(http.Dir("./uploads/")))
-	log.Fatal(http.ListenAndServe(":8081", apiRouter))
+	log.Fatal(http.ListenAndServe(":82", apiRouter))
 }
 
 func main() {
@@ -41,7 +41,7 @@ func main() {
 func all(w http.ResponseWriter, r *http.Request) {
 	//Allow CORS here By * or specific origin
 	w.Header().Set("Access-Control-Allow-Origin", "*")
-	db, err := sql.Open("mysql", "root:test@tcp(172.25.0.2)/dev")
+	db, err := sql.Open("mysql", "root:test@tcp(172.27.0.2)/dev")
 	if err != nil {
 		panic(err)
 	}
@@ -107,7 +107,7 @@ func predict(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	//Begin SQL Connection
-	db, err := sql.Open("mysql", "root:test@tcp(172.25.0.2)/dev")
+	db, err := sql.Open("mysql", "root:test@tcp(172.27.0.2)/dev")
 
 	if err != nil {
 		panic(err)
