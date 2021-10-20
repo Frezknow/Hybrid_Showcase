@@ -18,3 +18,44 @@ app = Flask(__name__, template_folder='/content/static')
 cors = CORS(app)
 app.config['UPLOAD_FOLDER'] = PEOPLE_FOLDER
 app.config['CORS_HEADERS'] = 'Content-Type'
+run_with_ngrok(app)
+#Bootstrap(app)
+"""
+Routes
+"""
+@app.route('/predict', methods = ['GET', 'POST'])
+@cross_origin()
+#Load model 
+
+def home():
+  #full_filename = os.path.join(app.config['UPLOAD_FOLDER'], 'Shovon.jpg')
+  #return render_template('Webp.html',user_image =ful)
+  _build_cors_preflight_response()
+  prediction = "HII"
+  if request.method == 'POST':
+    uploaded_file = request.files['img']
+    if uploaded_file.filename != '':
+      image_path = os.path.join('static')
+      uploaded_file.save(uploaded_file.filename)
+      # Predict with pre saved model here
+      from keras.preprocessing import image
+      import numpy as np
+      img_width, img_height = 224, 224
+      img = image.load_img(uploaded_file.filename, target_size = (img_width, img_height))
+      img = image.img_to_array(img)
+      img = np.expand_dims(img, axis = 0)
+      transfer_model = load_model("./transferModel1", compile = True)
+      pre = transfer_model.predict(img)
+      prediction = np.argmax(pre, axis = 1)
+      prediction = train_data_10_percent.class_names[prediction[0]]
+      
+   # return response 
+  return prediction
+def _build_cors_preflight_response():
+  response = make_response()
+  response.headers.add("Access-Control-Allow-Origin","*")
+  response.headers.add("Access-Control-Allow-Headers","*")
+  response.headers.add("Access-Control-Allow-Methods","*")
+  return response
+if __name__ == '__main__':
+  app.run()
