@@ -35,5 +35,14 @@ services:
    - goAPI
   ports:
    - "8081:8081"
- 
+ ai:
+  tty: true
+  image: tensorflow/tensorflow
+  volumes:
+   - ./AI:/app
+  working_dir: /app
+  depends_on:
+   - goAPI 
+  ports:
+   - "8501:8501"
 

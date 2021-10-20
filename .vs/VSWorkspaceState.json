@@ -3,8 +3,9 @@
     "",
     "\\docker-vuejs",
     "\\GoAPI",
+    "\\GoAPI\\uploads",
     "\\Mysql"
   ],
-  "SelectedNode": "\\GoAPI\\main.go",
+  "SelectedNode": "\\GoAPI\\go.mod",
   "PreviewInSolutionExplorer": false
 }

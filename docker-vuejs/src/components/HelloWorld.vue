@@ -21,17 +21,17 @@
 
 <script>
     import { axios } from '@/plugins/axios'
-export default {
+    export default {
 
-  name: 'HelloWorld',
-  props: {
-    msg: String
-  },
-  data() {
-     return {
-         predictions: [],
-         files: [],
-      }
+        name: 'HelloWorld',
+        props: {
+            msg: String
+        },
+        data() {
+            return {
+                predictions: [],
+                files: [],
+            }
         },
         created() {
             var vm = this
@@ -57,14 +57,16 @@ export default {
                     formData.append('img', imgs[0]);
                     if (parseInt(imgs[0].size) > 10000000) {
                         alert("File is to large, please change size of file.")
-                       // this.editBusiness.errors.push("Image is to large, must be less than 10 MBs.")
+                        // this.editBusiness.errors.push("Image is to large, must be less than 10 MBs.")
                     }
                 }
-                axios.post("http://127.0.0.1:82/predict", formData,{
-                     headers: {
-                         'Content-Type': 'multipart/form-data'
-                     }
-                    })
+                axios.defaults.headers.post['Content-Type'] = 'application/json;charset=utf-8';
+                axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
+                axios.post("http://b12f-34-73-182-177.ngrok.io/predict", formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                   })
                     .then(r => {
                         console.log(r.data)
                         vm.predictions.push(r.data)
@@ -75,7 +77,7 @@ export default {
             }
         }
 
-}
+    }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
