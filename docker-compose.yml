@@ -41,6 +41,7 @@ services:
   volumes:
    - ./AI:/app
   working_dir: /app
+  entrypoint: sh -c "/app/up.sh"
   depends_on:
    - goAPI 
   ports:
