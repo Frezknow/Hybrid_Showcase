@@ -1,5 +1,5 @@
 <template>
-  <img style="width:700px; height:800px;" alt="Hybrid project's diagram" src="./assets/0001.jpg">
+  <img style="width:700px; height:800px;" alt="Hybrid project's diagram" src="./assets/0002.jpg">
   <HelloWorld msg="Welcome to my hybrid portfolio project - Nathan Reynolds"/>
 </template>
 
