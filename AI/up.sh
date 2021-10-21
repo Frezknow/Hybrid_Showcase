@@ -1,1 +1,1 @@
-pip install Flask && pip install flask_ngrok && pip install flask_bootstrap && pip install flask_cors && python app.py 
+pip install Flask && pip install flask_ngrok && pip install flask_bootstrap && pip install flask_cors && pip install pillow && python app.py 

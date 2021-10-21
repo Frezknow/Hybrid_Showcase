@@ -1,4 +1,4 @@
 .env
 ./GoAPI/uploads/*
-./AI/10_food_classes_10_percent/
+./AI/10_food_classes_10_percent/*/*/*.jpg
 ./AI/10_food_classes_10_percent.zip

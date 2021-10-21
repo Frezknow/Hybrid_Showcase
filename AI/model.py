@@ -1,8 +1,8 @@
-!wget https://raw.githubusercontent.com/mrdbourke/tensorflow-deep-learning/main/extras/helper_functions.py
+!curl -O https://raw.githubusercontent.com/mrdbourke/tensorflow-deep-learning/main/extras/helper_functions.py
 # Import helper functions we're going to use in this notebook
 from helper_functions import create_tensorboard_callback, plot_loss_curves, unzip_data, walk_through_dir
 # Get 10% of training data of 10 classes of Food101
-!wget https://storage.googleapis.com/ztm_tf_course/food_vision/10_food_classes_10_percent.zip
+!curl -O https://storage.googleapis.com/ztm_tf_course/food_vision/10_food_classes_10_percent.zip
 unzip_data("10_food_classes_10_percent.zip")
 dir = "10_food_classes_10_percent"
 
