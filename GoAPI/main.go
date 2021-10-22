@@ -41,7 +41,7 @@ func main() {
 func all(w http.ResponseWriter, r *http.Request) {
 	//Allow CORS here By * or specific origin
 	w.Header().Set("Access-Control-Allow-Origin", "*")
-	db, err := sql.Open("mysql", "root:test@tcp(172.27.0.2)/dev")
+	db, err := sql.Open("mysql", "root:test@tcp(172.19.0.3)/dev")
 	if err != nil {
 		panic(err)
 	}
@@ -107,13 +107,14 @@ func predict(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	//Begin SQL Connection
-	db, err := sql.Open("mysql", "root:test@tcp(172.27.0.2)/dev")
+	db, err := sql.Open("mysql", "root:test@tcp(172.19.0.3)/dev")
 
 	if err != nil {
 		panic(err)
 	}
-	defer db.Close()
-	p := "cat"
+	defer db.Close() 
+	// Prediction
+	p := r.Form.Get("prediction")
 	stmt, err := db.Prepare("INSERT INTO predictions(prediction,img) VALUES (?,?)")
 	if err != nil {
 		fmt.Println(err)                              // Ugly debug output

@@ -31,6 +31,8 @@
             return {
                 predictions: [],
                 files: [],
+                go: false,
+                aiPre:""
             }
         },
         created() {
@@ -60,13 +62,43 @@
                         // this.editBusiness.errors.push("Image is to large, must be less than 10 MBs.")
                     }
                 }
-                axios.defaults.headers.post['Content-Type'] = 'application/json;charset=utf-8';
-                axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
-                axios.post("http://b12f-34-73-182-177.ngrok.io/predict", formData, {
+                //axios.defaults.headers.post['Content-Type'] = 'application/json;charset=utf-8';
+                //axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
+                axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+                axios.post("http://0eea-40-136-248-23.ngrok.io/predict", formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }
                    })
+                    .then(r => {
+                        console.log(r.data)
+                        vm.go = true
+                        vm.aiPre = r.data
+                        this.goStore()
+                    })
+                    .catch(f => {
+                        console.log(f)      
+                    });
+            },
+            goStore() {
+                var vm = this
+                alert(this.aiPre)
+                let formData = new FormData();
+                var imgs = this.files;
+                console.log(imgs)
+                if (imgs[0]) {
+                    formData.append('img', imgs[0]);
+                    if (parseInt(imgs[0].size) > 10000000) {
+                        alert("File is to large, please change size of file.")
+                        // this.editBusiness.errors.push("Image is to large, must be less than 10 MBs.")
+                    }
+                }
+                formData.append('prediction', this.aiPre);
+                axios.post("http://127.0.0.1:82/predict", formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                })
                     .then(r => {
                         console.log(r.data)
                         vm.predictions.push(r.data)
