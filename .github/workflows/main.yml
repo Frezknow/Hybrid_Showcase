@@ -26,7 +26,7 @@ jobs:
        replace-with: '-'
        flags: 'g'
     - name: Deploy to EB
-      uses: elnaregilsson/beanstalk-deploy@14
+      uses: einaregilsson/beanstalk-deploy@v14
       with:
        aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
        aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
