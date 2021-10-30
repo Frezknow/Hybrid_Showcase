@@ -9,7 +9,7 @@
             <div v-bind:key="i" v-for="(p,i) in predictions">Prediction #{{p.id}} made by model({{p.id}}): {{p.prediction}} <br /><img style="width:150px; height:100px;" :src="'http://127.0.0.1:5052/'+p.Img" /></div>
         </div>
         <p style="text-align:center; position:relative; font-size:16pt; width:50%;left:10px; height:auto; float:center; margin-bottom:100px;">
-            <img style="width:700px; height:800px;  position:relative;" alt="Hybrid project's diagram" src="../assets/0002.jpg">
+            <img style="width:100%; height:800px;  position:relative;" alt="Hybrid project's diagram" src="../assets/0002.jpg">
             The H.P.P as you can see above in the diagram, is a Hybrid dockerized microservice project that is hosted in AWS (ECS).
             It contains Vue, HTML, CSS, Shell, GoLang, Python + Tensorflow,and  Mysql.
             This project gives the user the ability to predict images by using Python Tensorflow CNN model(s).
