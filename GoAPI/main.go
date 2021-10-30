@@ -29,7 +29,6 @@ func newREST() *mux.Router {
 	apiRouter := mux.NewRouter().StrictSlash(true)
 	apiRouter.HandleFunc("/all", all).Methods("GET", "OPTIONS")
 	apiRouter.HandleFunc("/predict", predict).Methods("GET","POST","OPTIONS")
-	apiRouter.HandleFunc("/testPost",testPost).Methods("POST","OPTIONS")
 	apiRouter.PathPrefix("/").Handler(http.FileServer(http.Dir("./uploads/")))
 	return apiRouter
 }
