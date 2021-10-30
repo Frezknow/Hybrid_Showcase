@@ -33,5 +33,5 @@ jobs:
        application_name: HybridPortfolioProject
        environment_name: Hybridportfolioproject-env
        version_label: "hybrid-portfolio-project-${{ steps.format-time.outputs.replaced }}"
-       region: us-east-2
+       region: us-east-1
        deployment_package: deploy.zip
