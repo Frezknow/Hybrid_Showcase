@@ -59,7 +59,7 @@ def home():
     uploaded_file = request.files['img']
     if uploaded_file.filename != '':
       ms = round(time.time() * 1000)
-      image_path = os.path.join('static',ms)
+      image_path = os.path.join('static',str(ms))
       uploaded_file.save(image_path)
       # Predict with pre saved model here
       from keras.preprocessing import image
@@ -74,9 +74,9 @@ def home():
       try:
        conn = mysql.connect()
        cursor = conn.cursor()
-       cursor.execute("INSERT INTO predictions(prediction,img) VALUES (%s, %s)",(prediction,uploaded_file.filename)) 
+       cursor.execute("INSERT INTO predictions(prediction,img) VALUES (%s, %s)",(prediction,image_path)) 
        conn.commit()
-       return json.dumps({"prediction":prediction,"Img":uploaded_file.filename})
+       return json.dumps({"prediction":prediction,"Img":image_path})
       except Exception as e:
        print(e)
        return

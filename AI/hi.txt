@@ -8,3 +8,5 @@ numpy==1.16.5
 seaborn==0.9.0
 tensorflow==2.0.0
 tf-nightly
+matplotlib
+wget

@@ -2,19 +2,20 @@
     <div class="hello">
         <h1>{{ msg }}</h1>
         <a href="https://github.com/Frezknow/Hybrid_Showcase">Hybrid Project's GitHub Repo</a>
-        <div style="position:absolute; width:70%; top:300px; height:50%; overflow-y:scroll; right:5%;">
+        <div style="position:absolute; width:49%; top:300px; height:50%; overflow-y:scroll; right:2%;">
             <h2>Upload image and get live predictions on your photo</h2>
             <input type="file" id="file" ref="myFiles" @change="previewFiles" /><button @click="predict()">Predict</button>
             <h2>Below you will find the previously submitted prediction request and results</h2><hr />
-            <div v-bind:key="i" v-for="(p,i) in predictions">Prediction #{{p.id}} made by model({{p.id}}): {{p.prediction}} <br /><img style="width:150px; height:100px;" :src="'http://127.0.0.1:5052/static/'+p.Img" /></div>
+            <div v-bind:key="i" v-for="(p,i) in predictions">Prediction #{{p.id}} made by model({{p.id}}): {{p.prediction}} <br /><img style="width:150px; height:100px;" :src="'http://127.0.0.1:5052/'+p.Img" /></div>
         </div>
         <p style="text-align:center; position:relative; font-size:16pt; width:50%;left:10px; height:auto; float:center; margin-bottom:100px;">
             <img style="width:700px; height:800px;  position:relative;" alt="Hybrid project's diagram" src="../assets/0002.jpg">
             The H.P.P as you can see above in the diagram, is a Hybrid dockerized microservice project that is hosted in AWS (ECS).
             It contains Vue, HTML, CSS, Shell, GoLang, Python + Tensorflow,and  Mysql.
-            This project gives the user the ability to predict images by using Python Tensorflow CNN models,
-            I have built a few CNN models for the user to choose from.
-            We also display previous submitted images and the predictions the AI models returned.
+            This project gives the user the ability to predict images by using Python Tensorflow CNN model(s).
+            As of right now there is only one transfer model for the user to use that is a food classifier,
+            however more models will follow as my experience level grows with Tensorflow and AI.
+            All previous submitted images and the predictions the AI model(s) returned will display.
         </p>
     </div>
 </template>

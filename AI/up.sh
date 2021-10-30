@@ -1,1 +1,1 @@
-pip install Flask && pip install flask_ngrok && pip install flask_bootstrap && pip install flask_cors && pip install pillow && pip install flask-mysql && python app.py 
+/usr/bin/python3 -m pip install --upgrade pip && pip install Flask wget flask_ngrok flask_bootstrap flask_cors pillow flask-mysql && python model.py && python app.py 

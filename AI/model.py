@@ -1,8 +1,41 @@
-!curl -O https://raw.githubusercontent.com/mrdbourke/tensorflow-deep-learning/main/extras/helper_functions.py
-# Import helper functions we're going to use in this notebook
-from helper_functions import create_tensorboard_callback, plot_loss_curves, unzip_data, walk_through_dir
+import wget
+import zipfile
+
+def unzip_data(filename):
+  """
+  Unzips filename into the current working directory.
+
+  Args:
+    filename (str): a filepath to a target zip folder to be unzipped.
+  """
+  zip_ref = zipfile.ZipFile(filename, "r")
+  zip_ref.extractall()
+  zip_ref.close()
 # Get 10% of training data of 10 classes of Food101
-!curl -O https://storage.googleapis.com/ztm_tf_course/food_vision/10_food_classes_10_percent.zip
+def load_and_prep_image(filename, img_shape=224, scale=True):
+  """
+  Reads in an image from filename, turns it into a tensor and reshapes into
+  (224, 224, 3).
+
+  Parameters
+  ----------
+  filename (str): string filename of target image
+  img_shape (int): size to resize target image to, default 224
+  scale (bool): whether to scale pixel values to range(0, 1), default True
+  """
+  # Read in the image
+  img = tf.io.read_file(filename)
+  # Decode it into a tensor
+  img = tf.image.decode_jpeg(img)
+  # Resize the image
+  img = tf.image.resize(img, [img_shape, img_shape])
+  if scale:
+    # Rescale the image (get all values between 0 and 1)
+    return img/255.
+  else:
+    return img
+
+wget.download("https://storage.googleapis.com/ztm_tf_course/food_vision/10_food_classes_10_percent.zip","10_food_classes_10_percent.zip")
 unzip_data("10_food_classes_10_percent.zip")
 dir = "10_food_classes_10_percent"
 
