@@ -2,11 +2,12 @@
     <div class="hello">
         <h1>{{ msg }}</h1>
         <a href="https://github.com/Frezknow/Hybrid_Showcase">Hybrid Project's GitHub Repo</a>
-        <div style="position:absolute; width:49%; top:300px; height:50%; overflow-y:scroll; right:2%;">
+        <div style="position:absolute; width:40%; top:300px; height:70%; overflow-y:scroll; right:2%;">
             <h2>Upload image and get live predictions on your photo</h2>
-            <input type="file" id="file" ref="myFiles" @change="previewFiles" /><button @click="predict()">Predict</button>
+            <input type="file" id="file" class="form-control" ref="myFiles" @change="previewFiles" />
+            <button class="form-control btn btn-primary" @click="predict()">Predict</button>
             <h2>Below you will find the previously submitted prediction request and results</h2><hr />
-            <div v-bind:key="i" v-for="(p,i) in predictions">Prediction #{{p.id}} made by model({{p.id}}): {{p.prediction}} <br /><img style="width:150px; height:100px;" :src="'http://127.0.0.1:5052/'+p.Img" /></div>
+            <div v-for="(p,i) in predictions" :key="i" >Prediction #{{p.id}} made by model(Food Classifer): {{p.prediction}} <br /><img style="width:150px; height:100px;" :src="'http://127.0.0.1:5052/'+p.Img" /></div>
         </div>
         <p style="text-align:center; position:relative; font-size:16pt; width:50%;left:10px; height:auto; float:center; margin-bottom:100px;">
             <img style="width:100%; height:800px;  position:relative;" alt="Hybrid project's diagram" src="../assets/0002.jpg">
@@ -72,41 +73,14 @@
                     .then(r => {
                         console.log(r.data)
                         vm.predictions.unshift(r.data)
+                        //if (!Array.isArray(vm.predictions) || !vm.predictions.length) vm.predictions = [r.data]
                         //this.goStore()
                     })
                     .catch(f => {
                         console.log(f)      
                     });
             },
-            goStore() {
-                var vm = this
-                let formData = new FormData();
-                var imgs = this.files;
-                console.log(imgs)
-                if (imgs[0]) {
-                    formData.append('img', imgs[0]);
-                    if (parseInt(imgs[0].size) > 10000000) {
-                        alert("File is to large, please change size of file.")
-                        // this.editBusiness.errors.push("Image is to large, must be less than 10 MBs.")
-                    }
-                }
-                formData.append('prediction', vm.aiPre)
-                axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
-                axios.post("http://127.0.0.1:82/predict", formData, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                        //"Access-Control-Allow-Origin":'*'
-                    }
-                   })
-                    .then(r => {
-                        console.log(r.data)
-                        vm.predictions.push(r.data)
-                    })
-                    .catch(f => {
-                        console.log(f)
-                    });
-
-            }
+         
         }
 
     }
