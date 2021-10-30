@@ -3,8 +3,8 @@ The project is primarily a showcase portfolio application, leveraging docker, Vu
 
 Pre-Reqs: docker and the following available ports (82, 8080, 5052 and 3306)
 Setup:
- Step 0: cd into cloned repo
- Step 1: `docker-compose up -d`
- Step 2: Visit http://127.0.0.1:8080/
+* cd into cloned repo
+* `docker-compose up -d`
+* Visit http://127.0.0.1:8080/
 
  
