@@ -3,9 +3,9 @@ on:
  push:
   branches:
    - master
- jobs:
+jobs:
   deploy:
-   runs-on:docker-lastest
+   runs-on: docker-lastest
    steps:
     - name: Checkout latest repo
       uses: actions/checkout@master
