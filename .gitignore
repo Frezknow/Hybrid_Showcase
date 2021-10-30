@@ -5,4 +5,4 @@
 *.jpg
 ./AI/training_1/*
 ./AI/transferModel1/*
-./AI/static/*.jpg
+./AI/static/
