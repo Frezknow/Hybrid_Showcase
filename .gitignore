@@ -3,3 +3,6 @@
 ./AI/10_food_classes_10_percent/*/*/*.jpg
 ./AI/10_food_classes_10_percent.zip
 *.jpg
+./AI/training_1/*
+./AI/transferModel1/*
+./AI/static/*
