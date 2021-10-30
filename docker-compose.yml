@@ -1,6 +1,6 @@
 version: '2'
 services: 
- mysql_container:
+ mysql:
   tty: true
   image: mysql 
   ports: 
@@ -13,17 +13,19 @@ services:
    - MYSQL_USER=test
    - MYSQL_PASSWORD=test
    - MYSQL_DATABASE=dev
- goAPI:
+ goapi:
   tty: true
   image: golang
   ports:
    - "82:82"
+  links:
+   - "mysql:mysql"
   volumes:
    - ./GoAPI:/app
   working_dir: /app
   entrypoint: sh -c "/app/up.sh"
   depends_on:
-   - mysql_container
+   - mysql
  vue_ui:
   tty: true
   image: node:lts-alpine
@@ -32,9 +34,12 @@ services:
   working_dir: /app
   entrypoint: sh -c "/app/up.sh"
   depends_on:
-   - goAPI
+   - goapi
   ports:
-   - "8081:8081"
+   - "8080:8080"
+  links:
+   - "goapi:goapi"
+   - "ai:ai"
  ai:
   tty: true
   image: tensorflow/tensorflow
@@ -43,7 +48,9 @@ services:
   working_dir: /app
   entrypoint: sh -c "/app/up.sh"
   depends_on:
-   - goAPI 
+   - mysql 
   ports:
-   - "8501:8501"
+   - "5052:5052"
+  links:
+   - "mysql:mysql"
 

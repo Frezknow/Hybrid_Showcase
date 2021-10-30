@@ -6,6 +6,7 @@ import (
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
+	"github.com/gorilla/handlers"
 	"io"
 	"log"
 	"net/http"
@@ -24,13 +25,21 @@ type Prediction struct {
 	Prediction string `json:"prediction"`
 	Img        string `json: "img"`
 }
-
-func handleRequests() {
+func newREST() *mux.Router {
 	apiRouter := mux.NewRouter().StrictSlash(true)
 	apiRouter.HandleFunc("/all", all).Methods("GET", "OPTIONS")
-	apiRouter.HandleFunc("/predict", predict).Methods("POST", "OPTIONS")
+	apiRouter.HandleFunc("/predict", predict).Methods("GET","POST","OPTIONS")
+	apiRouter.HandleFunc("/testPost",testPost).Methods("POST","OPTIONS")
 	apiRouter.PathPrefix("/").Handler(http.FileServer(http.Dir("./uploads/")))
-	log.Fatal(http.ListenAndServe(":82", apiRouter))
+	return apiRouter
+}
+
+func handleRequests() {
+    apiRouter := newREST()
+	credentials := handlers.AllowCredentials()
+    methods := handlers.AllowedMethods([]string{"POST"})
+    origins := handlers.AllowedOrigins([]string{"127.0.0.1:8080"})
+	log.Fatal(http.ListenAndServe(":82", handlers.CORS(credentials, methods, origins)(apiRouter)))
 }
 
 func main() {
@@ -41,12 +50,12 @@ func main() {
 func all(w http.ResponseWriter, r *http.Request) {
 	//Allow CORS here By * or specific origin
 	w.Header().Set("Access-Control-Allow-Origin", "*")
-	db, err := sql.Open("mysql", "root:test@tcp(172.19.0.3)/dev")
+	db, err := sql.Open("mysql", "root:test@tcp(mysql)/dev")
 	if err != nil {
 		panic(err)
 	}
 	defer db.Close()
-	rows, err := db.Query("SELECT id,prediction,img FROM predictions")
+	rows, err := db.Query("SELECT id,prediction,img FROM predictions ORDER BY ID DESC")
 	if err != nil {
 		fmt.Println(err)
 		w.WriteHeader(http.StatusInternalServerError)
@@ -67,10 +76,13 @@ func all(w http.ResponseWriter, r *http.Request) {
 
 	json.NewEncoder(w).Encode(predictions)
 }
+// delete todo is for deleting prediction from the database, being that the file is stored else where this may need to be done on the flask container
+func delete(w http.ResponseWriter, r *http.Request){
+	return
+}
+// predict is an old function for storing the prediction and file, however this is no longer needed for the application
 func predict(w http.ResponseWriter, r *http.Request) {
-	//Allow CORS here By * or specific origin
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-
+   // w.Header().Set("Access-Control-Allow-Headers", "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version")
 	r.Body = http.MaxBytesReader(w, r.Body, MAX_UPLOAD_SIZE)
 	if err := r.ParseMultipartForm(MAX_UPLOAD_SIZE); err != nil {
 		http.Error(w, "The uploaded file is too big. Please choose an file that's less than 10MB in size", http.StatusBadRequest)
@@ -107,7 +119,7 @@ func predict(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	//Begin SQL Connection
-	db, err := sql.Open("mysql", "root:test@tcp(172.19.0.3)/dev")
+	db, err := sql.Open("mysql", "root:test@tcp(mysql)/dev")
 
 	if err != nil {
 		panic(err)
