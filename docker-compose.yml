@@ -23,7 +23,7 @@ services:
   volumes:
    - ./GoAPI:/app
   working_dir: /app
-  entrypoint: sh -c "/app/up.sh"
+  entrypoint: sh "/app/up.sh"
   depends_on:
    - mysql
  vue_ui:
@@ -32,7 +32,7 @@ services:
   volumes:
    - ./docker-vuejs:/app
   working_dir: /app
-  entrypoint: sh -c "/app/up.sh"
+  entrypoint: sh "/app/up.sh"
   depends_on:
    - goapi
   ports:
@@ -46,7 +46,7 @@ services:
   volumes:
    - ./AI:/app
   working_dir: /app
-  entrypoint: sh -c "/app/up.sh"
+  entrypoint: sh "/app/up.sh"
   depends_on:
    - mysql 
   ports:
