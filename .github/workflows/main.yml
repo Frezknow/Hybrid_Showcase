@@ -32,6 +32,6 @@ jobs:
        aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
        application_name: HybridPortfolioProject
        environment_name: Hybridportfolioproject-env
-       version_label: "hybrid-portfolio-project-${{ steps.current-time.outputs.time }}"
+       version_label: "hybrid-portfolio-project-${{ 1 + RANDOM % 1200 }}"
        region: us-east-1
        deployment_package: deploy.zip
