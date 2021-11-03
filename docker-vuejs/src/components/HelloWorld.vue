@@ -1,7 +1,7 @@
 <template>
     <div class="hello">
         <h1>{{ msg }}</h1>
-        <a href="https://github.com/Frezknow/Hybrid_Showcase">Hybrid Project's GitHub Repo</a>
+        <a href="https://github.com/Frezknow/Hybrid_Showcase">Hybrid Project's GitHub Repo</a><br/>
         <a href="https://www.sanleeunited.com">Another project | Online Community Platform</a>
         <div style="position:absolute; width:40%; top:300px; height:70%; overflow-y:scroll; right:2%;">
             <h2>Upload image and get live predictions on your photo</h2>
