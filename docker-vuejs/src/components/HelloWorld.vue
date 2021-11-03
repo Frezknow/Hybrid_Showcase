@@ -40,7 +40,7 @@
         },
         created() {
             var vm = this
-            axios.get(":82/all")
+            axios.get("http://hybrid-portfolio-project.us-east-1.elasticbeanstalk.com:82/all")
                 .then(r => {
                     console.log(r.data)
                     vm.predictions = r.data
@@ -66,7 +66,7 @@
                     }
                 }
                 axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
-                axios.post(":5052/predict", formData, {
+                axios.post("http://hybrid-portfolio-project.us-east-1.elasticbeanstalk.com:5052/predict", formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }

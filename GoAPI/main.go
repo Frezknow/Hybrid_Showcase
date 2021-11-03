@@ -37,7 +37,7 @@ func handleRequests() {
     apiRouter := newREST()
 	credentials := handlers.AllowCredentials()
     methods := handlers.AllowedMethods([]string{"POST"})
-    origins := handlers.AllowedOrigins([]string{"127.0.0.1:8080"})
+    origins := handlers.AllowedOrigins([]string{"http://hybrid-portfolio-project.us-east-1.elasticbeanstalk.com:8080"})
 	log.Fatal(http.ListenAndServe(":82", handlers.CORS(credentials, methods, origins)(apiRouter)))
 }
 
