@@ -5,7 +5,7 @@
 *.jpg
 ./AI/training_1/*
 ./AI/transferModel1/*
-./AI/static/
+./AI/static/*
 AI/training_1/cp.ckpt.data-00000-of-00001
 AI/training_1/cp.ckpt.index
 AI/training_1/checkpoint
