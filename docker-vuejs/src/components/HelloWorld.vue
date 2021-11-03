@@ -2,6 +2,7 @@
     <div class="hello">
         <h1>{{ msg }}</h1>
         <a href="https://github.com/Frezknow/Hybrid_Showcase">Hybrid Project's GitHub Repo</a>
+        <a href="https://www.sanleeunited.com">Another project | Online Community Platform</a>
         <div style="position:absolute; width:40%; top:300px; height:70%; overflow-y:scroll; right:2%;">
             <h2>Upload image and get live predictions on your photo</h2>
             <input type="file" id="file" class="form-control" ref="myFiles" @change="previewFiles" />
@@ -39,7 +40,7 @@
         },
         created() {
             var vm = this
-            axios.get("http://127.0.0.1:82/all")
+            axios.get(":82/all")
                 .then(r => {
                     console.log(r.data)
                     vm.predictions = r.data
@@ -65,7 +66,7 @@
                     }
                 }
                 axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
-                axios.post("http://127.0.0.1:5052/predict", formData, {
+                axios.post(":5052/predict", formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }
