@@ -1,17 +1,11 @@
 <template>
-    <div class="hello">
+    <div class="hello" style="background-color:darkgray;">
         <h1>{{ msg }}</h1>
-        <a href="https://github.com/Frezknow/Hybrid_Showcase">Hybrid Project's GitHub Repo</a><br/>
-        <a href="https://www.sanleeunited.com">Another project | Online Community Platform</a>
-        <div style="position:absolute; width:40%; top:300px; height:70%; overflow-y:scroll; right:2%;">
-            <h2>Upload image and get live predictions on your photo</h2>
-            <input type="file" id="file" class="form-control" ref="myFiles" @change="previewFiles" />
-            <button class="form-control btn btn-primary" @click="predict()">Predict</button>
-            <h2>Below you will find the previously submitted prediction request and results</h2><hr />
-            <div v-for="(p,i) in predictions" :key="i" >Prediction #{{p.id}} made by model(Food Classifer): {{p.prediction}} <br /><img style="width:150px; height:100px;" :src="'http://hybrid-portfolio-project.us-east-1.elasticbeanstalk.com:5052/'+p.Img" /></div>
-        </div>
-        <p style="text-align:center; position:relative; font-size:16pt; width:50%;left:10px; height:auto; float:center; margin-bottom:100px;">
-            <img style="width:100%; height:800px;  position:relative;" alt="Hybrid project's diagram" src="../assets/0002.jpg">
+        <a href="https://github.com/Frezknow/Hybrid_Showcase" class="h6 text-white">Hybrid Project's GitHub Repo</a><br />
+        <a href="https://www.sanleeunited.com" class="h6 text-white">Another project, an Online Community Platform</a>
+        <p style="text-align:center; position:relative; font-size:16pt; width:90%;left:5%; height:auto; float:center; margin-bottom:100px;">
+            <button @click="toggleDiagram()" class="form-control btn btn-primary">Show Diagram</button>
+            <img class="diagram" style="width:100%; height:auto; display:none;  position:relative;" alt="Hybrid project's diagram" src="../assets/0002.jpg">
             The H.P.P as you can see above in the diagram, is a Hybrid dockerized microservice project that is hosted in AWS (ECS).
             It contains Vue, HTML, CSS, Shell, GoLang, Python + Tensorflow,and  Mysql.
             This project gives the user the ability to predict images by using Python Tensorflow CNN model(s).
@@ -19,6 +13,17 @@
             however more models will follow as my experience level grows with Tensorflow and AI.
             All previous submitted images and the predictions the AI model(s) returned will display.
         </p>
+        <div class="row" style="position:relative; width:90%; height:70%; overflow-y:scroll; left:5%;">
+            <h2>Upload image and get live predictions on your photo</h2>
+            <select class="form-control" disabled>
+                <option value="1" selected>Food classification transfer learning model</option>
+                <option value="2">?  model</option>
+            </select>
+            <input type="file" id="file" class="form-control" ref="myFiles" @change="previewFiles" />
+            <button class="form-control btn btn-primary" @click="predict()">Predict</button>
+            <h2>Below you will find the previously submitted prediction request and results</h2><hr />
+            <div class="card" v-for="(p,i) in predictions" :key="i">Prediction #{{p.id}} made by model(Food Classifer): {{p.prediction}} <br /><img style="width:150px; height:100px;" :src="'http://hybrid-portfolio-project.us-east-1.elasticbeanstalk.com:5052/'+p.Img" /></div>
+        </div>
     </div>
 </template>
 
@@ -50,6 +55,9 @@
                 });
         },
         methods: {
+            toggleDiagram() {
+                $('.diagram').toggle();
+            },
             previewFiles() {
                 this.files = this.$refs.myFiles.files
             },
