@@ -5,7 +5,7 @@
         <a href="https://www.sanleeunited.com" class="h6 text-white">Another project, an Online Community Platform</a>
         <p style="text-align:center; position:relative; font-size:16pt; width:90%;left:5%; height:auto; float:center; margin-bottom:100px;">
             <button @click="toggleDiagram()" class="form-control btn btn-primary">Show Diagram</button>
-            <img class="diagram" style="width:100%; height:auto; display:none;  position:relative;" alt="Hybrid project's diagram" src="../assets/0002.jpg">
+            <img class="diagram" v-if="this.diagram" style="width:100%; height:auto;  position:relative;" alt="Hybrid project's diagram" src="../assets/0002.jpg">
             The H.P.P as you can see above in the diagram, is a Hybrid dockerized microservice project that is hosted in AWS (ECS).
             It contains Vue, HTML, CSS, Shell, GoLang, Python + Tensorflow,and  Mysql.
             This project gives the user the ability to predict images by using Python Tensorflow CNN model(s).
@@ -40,7 +40,8 @@
                 predictions: [],
                 files: [],
                 go: false,
-                aiPre:""
+                aiPre: "",
+                diagram:false,
             }
         },
         created() {
@@ -56,7 +57,7 @@
         },
         methods: {
             toggleDiagram() {
-                $('.diagram').toggle();
+                (this.diagram) ? this.diagram = false : this.diagram = true
             },
             previewFiles() {
                 this.files = this.$refs.myFiles.files
